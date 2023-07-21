@@ -462,7 +462,7 @@ known-third-party=enchant
 [STRING]
 
 # This flag controls whether the implicit-str-concat should generate a warning
-# on implicit string concatenation in sequences defined over several lines.
+# on implicit string concatenation in sequences deftestined over several lines.
 check-str-concat-over-line-jumps=yes
 
 [EXCEPTIONS]
@@ -470,3 +470,4 @@ check-str-concat-over-line-jumps=yes
 # Exceptions that will emit a warning when being caught. Defaults to
 # "Exception"
 overgeneral-exceptions=builtins.Exception
+sdaf 

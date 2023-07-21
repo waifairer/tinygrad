@@ -187,6 +187,8 @@ class LazyBuffer:
   def toCPU(self):
     assert self.dtype.np, "numpy dtype is required for toCPU"
     realized = self.cast(dtypes.from_np(self.dtype.np)).contiguous().realize().realized
+    print("HERE")
+    print(realized)
     ret = cast(RawBuffer, realized).toCPU().reshape(self.shape)
     return ret
 

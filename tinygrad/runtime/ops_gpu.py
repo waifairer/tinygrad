@@ -49,7 +49,11 @@ class CLBuffer(RawBufferCopyInOut):
   def _copyout(self, x:np.ndarray):
     CL.synchronize()
     assert not self.dtype.name.startswith("image"), f"can't copyout images {self.dtype}"
-    cl.enqueue_copy(CL.cl_queue[self._buf.device], x, self._buf, is_blocking=True)
+    print("buff" + str(self._buf))
+    res = cl.enqueue_copy(CL.cl_queue[self._buf.device], x, self._buf, is_blocking=True)
+    print("HERE LISTEN FOOM")
+    print(res)
+    res
 
 class CLProgram:
   def __init__(self, name:str, prg:str, binary=False, argdtypes=None, options=None):
