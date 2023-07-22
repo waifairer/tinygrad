@@ -1,6 +1,4 @@
 import numpy as np
-from tinygrad.helpers import dtypes
-from tinygrad.nn import Linear
 import torch
 import unittest
 from tinygrad.tensor import Tensor

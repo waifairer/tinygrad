@@ -22,12 +22,14 @@ jobs:
       run: pip install -e '.[linting,testing]' --extra-index-url https://download.pytorch.org/whl/cpu
     - name: Repo line count
       run: python3 sz.py
-    - name: Lint with pylint
+    - name: Lint global with pylint
       run: python -m pylint --disable=all -e W0311 -e C0303 --jobs=0 --indent-string='  ' **/*.py
     - name: Lint with flake8
       run: flake8 tinygrad/ --indent-size=2 --select=F,E112,E113,E203,E304,E502,E702,E703,E71,E72,E731,W191,W6 --statistics -j4
     - name: Lint tinygrad with pylint
       run: pylint tinygrad/
+    - name: Lint test with pylint
+      run: pylint test/ -d W0102 -d W0104 -d W0108 -d W0404 -d W0602 -d W0611 -d W0612 -d W0640 -d R1705 -d E1102 -d E1133
     - name: Run mypy
       run: mypy tinygrad/ --ignore-missing-imports --check-untyped-defs --explicit-package-bases --warn-unreachable
     - name: Install SLOCCount

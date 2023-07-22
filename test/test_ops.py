@@ -26,8 +26,8 @@ def helper_test_op(shps, torch_fxn, tinygrad_fxn=None, atol=1e-6, rtol=1e-3, gra
     assert x.shape == y.shape, f"shape mismatch: tinygrad={x.shape} | torch={y.shape}"
     try:
       np.testing.assert_allclose(x,y, atol=atol, rtol=rtol)
-    except Exception:
-      raise Exception(f"{s} failed shape {x.shape}")
+    except AssertionError as e:
+      raise AssertionError(f"{s} failed shape {x.shape}") from e
 
   if DEBUG >= 6:
     np.set_printoptions(linewidth=200, suppress=True)

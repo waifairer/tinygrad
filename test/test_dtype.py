@@ -4,7 +4,7 @@ from tinygrad.helpers import getenv, DType, DEBUG
 from tinygrad.lazy import Device
 from tinygrad.tensor import Tensor, dtypes
 from typing import List, Optional
-from extra.utils import OSX, temp
+from extra.utils import temp
 import copy
 
 def _test_to_np(a:Tensor, np_dtype, target):

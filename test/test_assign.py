@@ -3,8 +3,6 @@ import unittest
 import numpy as np
 from tinygrad.tensor import Tensor
 from tinygrad.lazy import LAZY
-from tinygrad.ops import GlobalCounters
-from tinygrad.graph import nm
 
 N = 200  # has to be bigger than the cache to fail
 
@@ -42,11 +40,11 @@ class TestAssign(unittest.TestCase):
     a.realize()
     b.realize()
     #GlobalCounters.cache = []
-    ba1 = a.lazydata.realized
-    bb1 = b.lazydata.realized
+    # ba1 = a.lazydata.realized
+    # bb1 = b.lazydata.realized
     a.assign(a.permute(1,0) + b)   # this should not work!
     a.realize()
-    ba2 = a.lazydata.realized
+    # ba2 = a.lazydata.realized
     # NOTE: don't test that it's assigned
     #assert ba1 == ba2 and ba1 != bb1
 

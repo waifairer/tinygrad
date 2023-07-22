@@ -7,7 +7,6 @@ import torch
 from tinygrad.tensor import Tensor, Device
 
 def start_profile():
-  import time
   pr = cProfile.Profile(timer=lambda: int(time.time()*1e9), timeunit=1e-6)
   pr.enable()
   return pr
