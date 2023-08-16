@@ -13,7 +13,12 @@ METAL_XCODE = getenv("METAL_XCODE")
 class _METAL:
   def __init__(self):
     self.mtl_buffers_in_flight: List[Any] = []
-    self.device = Metal.MTLCreateSystemDefaultDevice()
+    devices = Metal.MTLCopyAllDevices()
+    self.device = devices[1]
+    for device in devices:
+      print(device)
+      print(device.isLowPower, device.isRemovable)
+      if device.isLowPower and not device.isRemovable: self.device = device
     self.mtl_queue = self.device.newCommandQueue()
   # TODO: is there a better way to do this?
   def synchronize(self):
@@ -40,6 +45,7 @@ class MetalProgram:
   def __init__(self, name:str, prg:str, binary:bool=False):
     if METAL_XCODE:
       air = subprocess.check_output(['xcrun', '-sdk', 'macosx', 'metal', '-x', 'metal', '-c', '-', '-o', '-'], input=prg.encode('utf-8'))
+      # here you are
       # NOTE: if you run llvm-dis on "air" you can see the llvm bytecode
       lib = subprocess.check_output(['xcrun', '-sdk', 'macosx', 'metallib', '-', '-o', '-'], input=air)
       data = libdispatch.dispatch_data_create(lib, len(lib), None, None)
