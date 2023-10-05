@@ -178,6 +178,7 @@ def simple():
     
     targets = [BoxList(Tensor(gt), image_size=anchors[0][0].size)]
     objectness_loss, regression_loss = loss(anchors, objectness, rpn_box_regression, targets)
+    if objectness_loss is None or regression_loss is None: continue # todo negative mine
     total_loss = objectness_loss + regression_loss
 
     optimizer.zero_grad()
