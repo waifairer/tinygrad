@@ -122,10 +122,12 @@ def make_balanced_sampler_fn(batch_size_per_image: int, positive_fraction: float
     neg_inds = []
     for matches in image_matches:
       # expected that positive samples are amped to 1
+      if DEBUG > 0: print("matches", matches.numpy())
       positive, negative = matches == 1, matches == 0 
       num_pos = int(batch_size_per_image * positive_fraction)
 
       # protect against not enough positive examples
+      if DEBUG > 0: print("positive", positive.numpy(), "negative", negative.numpy())
       pos_numel, neg_numel = positive.sum().numpy().item(), negative.sum().numpy().item()
       num_pos = int(min(pos_numel, num_pos))
       num_neg = int(min(neg_numel, int(batch_size_per_image * (1 - positive_fraction))))
@@ -395,12 +397,12 @@ class RPNLossComputation:
     labels, regression_targets = self.prepare_targets(anchors, targets)
     sampled_pos_inds, sampled_neg_inds = self.fg_bg_sampler(labels)
     if DEBUG > 0: print("sampled_pos_inds", sampled_pos_inds, "sampled_neg_inds", sampled_neg_inds)
-    if len(sampled_pos_inds) > 0: return None, None # todo negative mining
+    if len(sampled_pos_inds[0]) == 0: return None, None # todo negative mining
     sampled_pos_inds, sampled_neg_inds = Tensor(sampled_pos_inds).squeeze(0), Tensor(sampled_neg_inds).squeeze(0)
     sampled_inds = Tensor.cat(sampled_pos_inds, sampled_neg_inds, dim=0)
     objectness, box_regression = \
             concat_box_prediction_layers(objectness, box_regression)
-    objectness = objectness.squeeze()
+    objectness = objectness.squeeze() 
     labels, regression_targets = Tensor.cat(*labels, dim=0), Tensor.cat(*regression_targets, dim=0)
     if DEBUG > 0: print("pos box_regression samples", box_regression[sampled_pos_inds].numpy(), "regression_targets", regression_targets[sampled_pos_inds].numpy())
     box_loss = smooth_l1_loss(

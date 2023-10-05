@@ -184,9 +184,9 @@ def simple():
     optimizer.zero_grad()
     total_loss.backward()
     optimizer.step()
+    print(f"Epoch {epoch + 1}/{NUM_EPOCHS}, Loss: {total_loss.numpy()}")
     del total_loss
     del images
-    print(f"Epoch {epoch + 1}/{NUM_EPOCHS}, Loss: {total_loss.numpy()}")
 
 if __name__ == "__main__":
   start = time.time()
