@@ -72,11 +72,20 @@ def make_match_fn(high: float, low: float) -> Callable[[Tensor], Tensor]:
   def hq_match_fn(preds: Tensor) -> Tensor:
     assert preds.numel() > 0, "must be scoring something"
     # drops lq+mid matches early
+    if DEBUG > 0: print("preds", preds.numpy())
     hq = (preds >= high) * preds
+    if DEBUG > 0: print("hq", hq.numpy())
     max_vals = hq.max(axis=1)
     max_vals = (max_vals == 0).where(-1, max_vals).unsqueeze(1) # -1 when pred == 0 for all gt
+    if DEBUG > 0: print("max_vals", max_vals.numpy())
     best_matches = (hq == max_vals).float()
+    if DEBUG > 0: print("best_matches", best_matches.numpy())
+    if DEBUG > 0: print("ones_like", Tensor.ones_like(best_matches).numpy())
+    if DEBUG > 0: print("ones_like cumsum", Tensor.ones_like(best_matches).cumsum(axis=1).numpy())
+    if DEBUG > 0: print("best_matches * ones_like", best_matches * Tensor.ones_like(best_matches).cumsum(axis=1))
+    if DEBUG > 0: print("(best_matches * ones_like).max", (best_matches * Tensor.ones_like(best_matches).cumsum(axis=1)).max(axis=1))
     best_gt = (best_matches * Tensor.ones_like(best_matches).cumsum(axis=1)).max(axis=1)
+    if DEBUG > 0: print("best_gt", best_gt.numpy())
     return best_gt - 1
   
   # Returns matches that were greater than low and less than high
@@ -344,8 +353,11 @@ class RPNLossComputation:
 
   def match_targets_to_anchors(self, anchors: BoxList, targets: BoxList):
     match_quality_matrix = boxlist_iou(anchors, targets)
+    if DEBUG > 0: print("match_quality_matrix", match_quality_matrix.numpy())
     matched_idxs = self.proposal_matcher(match_quality_matrix)
+    if DEBUG > 0: print("matched_idxs", matched_idxs.numpy())
     matched_targets = targets[matched_idxs.maximum(0)] # drop negatives
+    if DEBUG > 0: print("matched_targets", matched_targets.bbox.numpy())
     return matched_targets, matched_idxs
 
   def prepare_targets(self, anchors: List[BoxList], targets: List[BoxList]):
