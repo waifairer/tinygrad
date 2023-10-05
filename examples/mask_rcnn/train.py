@@ -135,7 +135,7 @@ def simple():
   from extra.datasets.coco import BASEDIR
 
   hq_fn, _ = make_match_fn(0.7, 0.4)
-  sampler = make_balanced_sampler_fn(10, 0.5)
+  sampler = make_balanced_sampler_fn(256, 0.5)
   coder = BoxCoder(weights=(1.0, 1.0, 1.0, 1.0))
   loss = RPNLossComputation(hq_fn, sampler, coder, generate_rpn_labels)
   channels=256
