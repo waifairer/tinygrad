@@ -394,7 +394,7 @@ class RPNLossComputation:
     anchors = [cat_boxlist(anchors_per_image) for anchors_per_image in anchors]
     labels, regression_targets = self.prepare_targets(anchors, targets)
     sampled_pos_inds, sampled_neg_inds = self.fg_bg_sampler(labels)
-    if DEBUG > 0: print("sampled_pos_inds", sampled_pos_inds.numpy(), "sampled_neg_inds", sampled_neg_inds.numpy())
+    if DEBUG > 0: print("sampled_pos_inds", sampled_pos_inds, "sampled_neg_inds", sampled_neg_inds)
     sampled_pos_inds, sampled_neg_inds = Tensor(sampled_pos_inds).squeeze(0), Tensor(sampled_neg_inds).squeeze(0)
     sampled_inds = Tensor.cat(sampled_pos_inds, sampled_neg_inds, dim=0)
     objectness, box_regression = \
