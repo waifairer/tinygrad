@@ -395,6 +395,7 @@ class RPNLossComputation:
     labels, regression_targets = self.prepare_targets(anchors, targets)
     sampled_pos_inds, sampled_neg_inds = self.fg_bg_sampler(labels)
     if DEBUG > 0: print("sampled_pos_inds", sampled_pos_inds, "sampled_neg_inds", sampled_neg_inds)
+    if len(sampled_pos_inds) > 0: return None, None # todo negative mining
     sampled_pos_inds, sampled_neg_inds = Tensor(sampled_pos_inds).squeeze(0), Tensor(sampled_neg_inds).squeeze(0)
     sampled_inds = Tensor.cat(sampled_pos_inds, sampled_neg_inds, dim=0)
     objectness, box_regression = \
