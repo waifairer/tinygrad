@@ -178,7 +178,6 @@ def simple():
     random_img_id = random.choice(img_ids)
     img_metadata = coco.loadImgs(random_img_id)[0]
     img_filename = os.path.join(BASEDIR, 'train2017', img_metadata['file_name'])
-    img_filename = '/root/tinygrad/extra/datasets/COCO/train2017/000000401625.jpg'
     print("training", img_filename)
     img = [Tensor(build_transforms()(Image.open(img_filename).convert("RGB")).numpy(), requires_grad=True)]
     images = to_image_list(img)
