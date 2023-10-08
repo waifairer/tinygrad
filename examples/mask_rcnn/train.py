@@ -205,8 +205,6 @@ def simple():
     print(f"Total memory: {mem_info['total'] / (1024**2):.2f} MB")
     print(f"Used memory: {mem_info['used'] / (1024**2):.2f} MB")
     print(f"Free memory: {mem_info['free'] / (1024**2):.2f} MB")
-    del total_loss
-    del images
 
 if __name__ == "__main__":
   start = time.time()
