@@ -131,10 +131,9 @@ def main():
 
 
 
-
+import pycuda.driver as cuda
+import pycuda.autoinit  # This is needed to initialize CUDA driver
 def get_gpu_memory():
-  import pycuda.driver as cuda
-  import pycuda.autoinit  # This is needed to initialize CUDA driver
   """Get the GPU memory usage."""
   free = cuda.mem_get_info()[0]
   total = cuda.mem_get_info()[1]
